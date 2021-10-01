@@ -1,0 +1,32 @@
+FROM python:3.9.6-alpine3.14
+
+ENV PATH="/scripts:${PATH}"
+
+# set work directory
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Needed for pycurl
+ENV PYCURL_SSL_LIBRARY=openssl
+
+# install psycopg2 dependencies
+RUN apk update \
+  && apk add postgresql-dev gcc python3-dev musl-dev libffi-dev dcron \
+  && rm -rf /var/cache/apk/*
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
+# copy project
+COPY . .
+
+COPY ./scripts /scripts
+RUN chmod +x /scripts/*
+
+# run entrypoint.sh
+CMD ["entrypoint.sh"]
