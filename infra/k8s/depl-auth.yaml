@@ -4,7 +4,7 @@ metadata:
   name: auth-deployment
   namespace: nvg-cdp
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       component: auth
@@ -22,13 +22,18 @@ spec:
             - name: PGUSER
               value: postgres
             - name: PGHOST
-              value: postgres-cluster-ip-auth
+              value: postgres-cluster-ip-service
             - name: PGPORT
               value: '5432'
             - name: PGDATABASE
               value: postgres
-            - name: POSTGRES_PASSWORD
+            - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pgpassword
                   key: PGPASSWORD
+            - name: SECRET_JWT
+              valueFrom:
+                secretKeyRef:
+                  name: secretjwt
+                  key: SECRET_JWT

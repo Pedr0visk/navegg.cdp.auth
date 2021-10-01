@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,11 +22,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ilmu54&6-4qnftwqcew93)$a1bdtj4nhsq@zre4_#!42uk$yvx'
+SECRET_JWT = os.getenv('SECRET_JWT', 'changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    '127.0.0.1',
+    'localhost',
+    'kylo-ren-3f10f1910b7ec0b1bd973da20db66b8f-0000.us-south.containers.appdomain.cloud'
+]
 
 # Application definition
 
@@ -74,7 +81,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Authentication
 JWT_AUTH = {
-    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_SECRET_KEY': SECRET_JWT,
 }
 
 # Impersonation
@@ -88,11 +95,11 @@ AUTH_USER_MODEL = 'users.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'navegg_users',
-        'USER': 'admin',
-        'PASSWORD': 'postgres_password',
-        'HOST': 'postgres',
-        'PORT': '5432',
+        'NAME': os.getenv('PGDATABASE', 'navegg_users'),
+        'USER': os.getenv('PGUSER', 'admin'),
+        'PASSWORD': os.getenv('PGPASSWORD', 'postgres_password'),
+        'HOST': os.getenv('PGHOST', 'postgres'),
+        'PORT': os.getenv('PGPORT', '5432'),
     }
 }
 
