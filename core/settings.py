@@ -27,15 +27,14 @@ SECRET_JWT = os.getenv('SECRET_JWT', 'changeme')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '0.0.0.0',
-    '127.0.0.1',
-    'localhost',
-    'kylo-ren-3f10f1910b7ec0b1bd973da20db66b8f-0000.us-south.containers.appdomain.cloud'
-]
+ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS.append(os.getenv('HOSTS', '').split(','))
+
+# Cors
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,13 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'users',
-
-    'rest_framework'
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,19 +78,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# Impersonation
+IMPERSONATION_REDIRECT_URL = os.getenv('IMPERSONATION_URL', '')
+
 # Authentication
 JWT_AUTH = {
-    'JWT_SECRET_KEY': SECRET_JWT,
+    'JWT_SECRET_KEY': SECRET_JWT
 }
-
-# Impersonation
-IMPERSONATION_REDIRECT_URL = 'https://kylo-ren-3f10f1910b7ec0b1bd973da20db66b8f-0000.us-south.containers.appdomain.cloud/impersonate-user'
 
 AUTH_USER_MODEL = 'users.User'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

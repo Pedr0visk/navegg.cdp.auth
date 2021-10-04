@@ -17,10 +17,10 @@ class OncePerMinuteUserThrottle(UserRateThrottle):
     rate = '1/minute'
 
 
+# @throttle_classes([OncePerMinuteUserThrottle])
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
-@throttle_classes([OncePerMinuteUserThrottle])
 def user_signon(request):
     token = request.user.impersonate()
     url = settings.IMPERSONATION_REDIRECT_URL
@@ -29,7 +29,7 @@ def user_signon(request):
 
 @api_view(['GET'])
 def user_impersonate(request, token):
-    obj = UserImpersonation.objects.get(token=token) or None
+    obj = UserImpersonation.objects.filter(token=token).first() or None
 
     if not obj:
         return Response({"message": "Resource not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -50,3 +50,13 @@ def user_impersonate(request, token):
 
     # generate jwt token
     return Response({"token": token})
+
+
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    return Response({
+        'user_id': request.user.id,
+        'email': request.user.email
+    }, status=status.HTTP_200_OK)
