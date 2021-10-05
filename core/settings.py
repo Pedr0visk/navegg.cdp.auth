@@ -28,9 +28,10 @@ SECRET_JWT = os.getenv('SECRET_JWT', 'changeme')
 # DEBUG = bool(int(os.getenv('DEBUG', '1')))
 DEBUG = True
 
-ALLOWED_HOSTS = []
-# if not DEBUG:
-ALLOWED_HOSTS.append(os.getenv('HOSTS', '').split(','))
+ALLOWED_HOSTS = [
+    'localhost',
+    'kylo-ren-3f10f1910b7ec0b1bd973da20db66b8f-0000.us-south.containers.appdomain.cloud'
+]
 
 # Cors
 CORS_ALLOW_ALL_ORIGINS = True
