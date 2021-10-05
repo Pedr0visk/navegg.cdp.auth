@@ -21,7 +21,7 @@ class OncePerMinuteUserThrottle(UserRateThrottle):
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
-def user_signon(request):
+def user_impersonation(request):
     token = request.user.impersonate()
     url = settings.IMPERSONATION_REDIRECT_URL
     return Response({"url": "%s/%s/" % (url, token)})
@@ -55,7 +55,7 @@ def user_impersonate(request, token):
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
-def user_profile(request):
+def user_current(request):
     return Response({
         'user_id': request.user.id,
         'email': request.user.email
