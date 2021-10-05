@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ilmu54&6-4qnftwqcew93)$a1bdtj4nhsq@zre4_#!42uk$yvx
 SECRET_JWT = os.getenv('SECRET_JWT', 'changeme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG', '1')))
 
 ALLOWED_HOSTS = []
 if not DEBUG:
