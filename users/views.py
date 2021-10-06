@@ -32,7 +32,7 @@ def user_impersonate(request, token):
     obj = UserImpersonation.objects.filter(token=token).first() or None
 
     if not obj:
-        return Response({"message": "Resource not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"message": "Bad Request"}, status=status.HTTP_400_BAD_REQUEST)
 
     diff = dt.now(tz=timezone.utc) - obj.expire_date
     if diff.seconds > 300:

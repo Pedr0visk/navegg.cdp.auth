@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,10 +29,10 @@ SECRET_JWT = os.getenv('SECRET_JWT', 'changeme')
 # DEBUG = bool(int(os.getenv('DEBUG', '1')))
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    'kylo-ren-3f10f1910b7ec0b1bd973da20db66b8f-0000.us-south.containers.appdomain.cloud'
-]
+ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS_ENV = os.getenv('ALLOWED_HOSTS_ENV')
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
 # Cors
 CORS_ALLOW_ALL_ORIGINS = True
@@ -83,11 +84,13 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Impersonation
 IMPERSONATION_REDIRECT_URL = os.getenv('IMPERSONATION_URL', '')
 
-# Authentication
+# JWT
 JWT_AUTH = {
-    'JWT_SECRET_KEY': SECRET_JWT
+    'JWT_SECRET_KEY': SECRET_JWT,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=1440),
 }
 
+# Authentication
 AUTH_USER_MODEL = 'users.User'
 
 # Database
