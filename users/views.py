@@ -57,8 +57,10 @@ def user_impersonate(request, token):
 @permission_classes([IsAuthenticated])
 def user_current(request):
     return Response({
-        'user_id': request.user.id,
-        'email': request.user.email
+        'usr_id': request.user.id,
+        'acc_id': request.user.acc_id,
+        'email': request.user.email,
+        'name': request.user.first_name
     }, status=status.HTTP_200_OK)
 
 
@@ -67,6 +69,7 @@ def user_batch_insert(request):
     for user in request.data:
         User.objects.create(
             id=user['id'],
+            acc_id=int(user['acc_id']),
             first_name=user['first_name'],
             email=user['email'],
             password=user['password'],
