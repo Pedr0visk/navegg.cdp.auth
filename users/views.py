@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from users.models import UserImpersonation
+from .models import UserImpersonation, User
 
 from rest_framework_jwt.settings import api_settings
 from datetime import datetime as dt, timezone
@@ -60,3 +60,19 @@ def user_current(request):
         'user_id': request.user.id,
         'email': request.user.email
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def user_batch_insert(request):
+    for user in request.data:
+        User.objects.create(
+            id=user['id'],
+            first_name=user['first_name'],
+            email=user['email'],
+            password=user['password'],
+            is_active=True,
+            is_staff=False,
+            is_superuser=False
+        )
+
+    return Response({'message': 'Success!'}, status=status.HTTP_201_CREATED)
