@@ -2,6 +2,7 @@ import secrets
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext_lazy as _
 
 from datetime import datetime as dt
@@ -47,6 +48,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     acc_id = models.IntegerField()
+    accounts_id = ArrayField(models.IntegerField(null=True), null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['acc_id']

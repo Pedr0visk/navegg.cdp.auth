@@ -60,7 +60,8 @@ def user_current(request):
         'usr_id': request.user.id,
         'acc_id': request.user.acc_id,
         'email': request.user.email,
-        'name': request.user.first_name
+        'name': request.user.first_name,
+        'accounts_id' : request.user.accounts_id
     }, status=status.HTTP_200_OK)
 
 
@@ -70,6 +71,7 @@ def user_batch_insert(request):
         User.objects.create(
             id=user['id'],
             acc_id=int(user['acc_id']),
+            accounts_id=user['accounts_ids'],
             first_name=user['first_name'],
             email=user['email'],
             password=user['password'],
