@@ -48,7 +48,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     acc_id = models.IntegerField()
-    accounts_id = ArrayField(models.IntegerField(null=True), null=True)
+    accounts_id = ArrayField(models.IntegerField(), default=list)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['acc_id']

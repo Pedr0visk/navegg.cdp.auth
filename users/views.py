@@ -21,8 +21,16 @@ class OncePerMinuteUserThrottle(UserRateThrottle):
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
-def user_impersonation(request):
-    token = request.user.impersonate()
+def user_impersonation(request, acc_id):
+    user = request.user
+
+    if acc_id not in user.accounts_id:
+        return Response({'errors': [{'message': 'You are not authorized.'}]}, status=status.HTTP_401_UNAUTHORIZED)
+
+    user.acc_id = acc_id
+    user.save()
+
+    token = user.impersonate()
     url = settings.IMPERSONATION_REDIRECT_URL
     return Response({"url": "%s/%s/" % (url, token)})
 
@@ -61,7 +69,7 @@ def user_current(request):
         'acc_id': request.user.acc_id,
         'email': request.user.email,
         'name': request.user.first_name,
-        'accounts_id' : request.user.accounts_id
+        'accounts_id': request.user.accounts_id
     }, status=status.HTTP_200_OK)
 
 
@@ -71,8 +79,8 @@ def user_batch_insert(request):
         User.objects.create(
             id=user['id'],
             acc_id=int(user['acc_id']),
-            accounts_id=user['accounts_ids'],
             first_name=user['first_name'],
+            accounts_id=user['accounts_id'],
             email=user['email'],
             password=user['password'],
             is_active=True,
