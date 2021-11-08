@@ -13,6 +13,6 @@ urlpatterns = [
     # Impersonation Routes
     path('generate-impersonation-url/<int:acc_id>',
          user_impersonation, name='impersonation-url'),
-    path('impersonate/<str:token>/',
+    path('impersonate/<str:token>',
          user_impersonate, name='impersonate-account'),
 ]
