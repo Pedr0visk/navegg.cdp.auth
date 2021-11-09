@@ -7,7 +7,7 @@ from kafka import KafkaConsumer, TopicPartition
 from users.models import User
 
 # Get an instance of a logger
-logger = logging.getLogger('django')
+# logger = logging.getLogger('django')
 
 
 class Consumer(multiprocessing.Process):

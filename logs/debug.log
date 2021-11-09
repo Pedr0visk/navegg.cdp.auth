@@ -1,0 +1,3 @@
+File /usr/src/app/core/settings.py previous mtime: 1636474715.9370892, current mtime: 1636485986.3267896
+/usr/src/app/core/settings.py notified as changed. Signal results: [(<function template_changed at 0xffff81b5d9d0>, None), (<function translation_file_changed at 0xffff80e799d0>, None)].
+/usr/src/app/core/settings.py changed, reloading.
