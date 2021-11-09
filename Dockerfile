@@ -50,6 +50,7 @@ RUN pip install --no-cache /wheels/*
 # copy project
 COPY ./manage.py $APP_HOME
 COPY ./core $APP_HOME/core
+COPY ./logs $APP_HOME/logs
 COPY ./users $APP_HOME/users
 
 COPY ./scripts /scripts
