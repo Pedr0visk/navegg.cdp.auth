@@ -50,7 +50,7 @@ class Consumer(multiprocessing.Process):
                     elif topic == "user-created":
                         try:
                             User.objects.create(**message)
-                        except:
+                        except BaseException:
                             pass
                     if self.stop_event.is_set():
                         break
