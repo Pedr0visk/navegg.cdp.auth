@@ -28,18 +28,22 @@ class Consumer(multiprocessing.Process):
         try:
             consumer = KafkaConsumer(
                 # bootstrap_servers=['my-cluster-kafka-bootstrap.kafka:9092'],
-                bootstrap_servers=['150.238.217.212:9094'],
+                bootstrap_servers=[
+                    'my-cluster-kafka-external-bootstrap.kafka:9094'],
                 auto_offset_reset='earliest',
                 enable_auto_commit=True,
                 group_id='users-group',
                 value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
-            consumer.subscribe(['updated_user', 'created_user'])
+            consumer.subscribe(['user-updated', 'user-created'])
             while not self.stop_event.is_set():
                 for message in consumer:
-                    message = message.value
+                    message = message.value  # {...}
                     topic = message.topic
+
+                    # ...
                     User.objects.get()
+                    # ...
                     if self.stop_event.is_set():
                         break
 
