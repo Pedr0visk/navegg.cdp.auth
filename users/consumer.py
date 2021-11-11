@@ -7,7 +7,7 @@ from kafka import KafkaConsumer, TopicPartition
 from users.models import User
 
 # Get an instance of a logger
-# logger = logging.getLogger('django')
+logger = logging.getLogger('django')
 
 
 class Consumer(multiprocessing.Process):
@@ -27,23 +27,26 @@ class Consumer(multiprocessing.Process):
     def run(self):
         try:
             consumer = KafkaConsumer(
-                # bootstrap_servers=['my-cluster-kafka-bootstrap.kafka:9092'],
-                bootstrap_servers=[
-                    'my-cluster-kafka-external-bootstrap.kafka:9094'],
+                # bootstrap_servers=['my-cluster-kafka-bootstrap.kafka:9094'],
+                bootstrap_servers=['150.238.217.211:9094'],
                 auto_offset_reset='earliest',
                 enable_auto_commit=True,
                 group_id='users-group',
                 value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
-            consumer.subscribe(['user-updated', 'user-created'])
+            consumer.subscribe(['user-updated', 'user'])
             while not self.stop_event.is_set():
                 for message in consumer:
-                    message = message.value  # {...}
                     topic = message.topic
+                    message = message.value
 
-                    # ...
-                    User.objects.get()
-                    # ...
+                    if topic == "user-updated":
+                        try:
+                            user = User.objects.filter(id=message['id'])
+                            message.pop('id')
+                            user.update(**message)
+                        except User.DoesNotExist:
+                            print('User does not exist')
                     if self.stop_event.is_set():
                         break
 
