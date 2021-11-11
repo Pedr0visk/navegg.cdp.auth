@@ -34,7 +34,7 @@ class Consumer(multiprocessing.Process):
                 group_id='users-group',
                 value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
-            consumer.subscribe(['user-updated', 'user'])
+            consumer.subscribe(['user-updated', 'user-created'])
             while not self.stop_event.is_set():
                 for message in consumer:
                     topic = message.topic
@@ -47,6 +47,11 @@ class Consumer(multiprocessing.Process):
                             user.update(**message)
                         except User.DoesNotExist:
                             print('User does not exist')
+                    elif topic == "user-created":
+                        try:
+                            User.objects.create(**message)
+                        except:
+                            pass
                     if self.stop_event.is_set():
                         break
 
