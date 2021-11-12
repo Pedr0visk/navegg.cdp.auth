@@ -9,13 +9,10 @@ from rest_framework_jwt.compat import get_username
 from rest_framework_jwt.compat import get_username_field
 from rest_framework_jwt.settings import api_settings
 
-from users.serializers import UserResponseSerializer
-
 
 def jwt_response_payload_handler(token, user=None, request=None):
     return {
-        'token': token,
-        'user': UserResponseSerializer(user, context={'request': request}).data
+        'token': token
     }
 
 
