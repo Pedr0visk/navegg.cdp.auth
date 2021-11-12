@@ -88,6 +88,8 @@ IMPERSONATION_REDIRECT_URL = os.getenv('IMPERSONATION_URL', '')
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_JWT,
     'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=1440),
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'core.utils.jwt_response_payload_handler',
+    'JWT_PAYLOAD_HANDLER': 'core.utils.jwt_payload_handler'
 }
 
 # Authentication
