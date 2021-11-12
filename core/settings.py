@@ -178,3 +178,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #         },
 #     },
 # }
+
+KAFKA_BROKERS = os.getenv('KAFKA_HOST', '').split(',')

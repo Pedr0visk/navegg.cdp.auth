@@ -3,6 +3,8 @@ import logging
 import time
 import multiprocessing
 
+from django.conf import settings
+
 from kafka import KafkaConsumer, TopicPartition
 from users.models import User
 
@@ -27,8 +29,7 @@ class Consumer(multiprocessing.Process):
     def run(self):
         try:
             consumer = KafkaConsumer(
-                # bootstrap_servers=['my-cluster-kafka-bootstrap.kafka:9094'],
-                bootstrap_servers=['150.238.217.211:9094'],
+                bootstrap_servers=settings.KAFKA_BROKERS,
                 auto_offset_reset='earliest',
                 enable_auto_commit=True,
                 group_id='users-group',

@@ -58,4 +58,4 @@ COPY ./scripts /scripts
 RUN chmod +x /scripts/*
 
 # run entrypoint.sh
-CMD ["entrypoint.sh"]
+CMD ["entrypoint.sh", "consumer.sh", "database.sh"]
