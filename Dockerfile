@@ -53,6 +53,8 @@ COPY ./core $APP_HOME/core
 COPY ./logs $APP_HOME/logs
 COPY ./users $APP_HOME/users
 
+COPY ./postgres_users.json $APP_HOME
+
 COPY ./scripts /scripts
 
 RUN chmod +x /scripts/*
